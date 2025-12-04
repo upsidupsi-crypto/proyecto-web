@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cola</title>
+</head>
+<body>
+    <a href="Proyecto.html">Volver al Menú</a>
+    <hr>
+
+    <h1>Cola (Queue)</h1>
+    <p>FIFO (First In, First Out).</p>
+    
+    <div>
+        <input type="text" id="inputCola" placeholder="Valor numérico">
+        <button onclick="app.encolar()">Encolar</button>
+        <button onclick="app.desencolar()">Desencolar</button>
+    </div>
+    <p id="mensaje" style="color: blue;"></p>
+
+    <h3>Visualización:</h3>
+    <div id="lienzo" style="display: flex; gap: 5px;">La cola está vacía</div>
+
+    <h3>Código C:</h3>
+    <pre id="codigoDisplay" style="background-color: #f0f0f0; padding: 10px;">Seleccione una operación...</pre>
+
+    <script>
+        const CODIGO_C = {
+            encolar: `typedef struct Nodo {
+    int dato;
+    struct Nodo* siguiente;
+} Nodo;
+
+void encolar(Cola* c, int dato) {
+    Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
+    nuevoNodo->dato = dato;
+    nuevoNodo->siguiente = NULL;
+    if (c->final == NULL) {
+        c->frente = c->final = nuevoNodo;
+    } else {
+        c->final->siguiente = nuevoNodo;
+        c->final = nuevoNodo;
+    }
+}`,
+            desencolar: `int desencolar(Cola* c) {
+    if (c->frente == NULL) return -1;
+    Nodo* temporal = c->frente;
+    int dato = temporal->dato;
+    c->frente = c->frente->siguiente;
+    if (c->frente == NULL) c->final = NULL;
+    free(temporal);
+    return dato;
+}`
+        };
+
+        const app = {
+            datos: [],
+
+            encolar() {
+                const input = document.getElementById('inputCola');
+                const val = input.value.trim();
+                if (!val || isNaN(val)) return alert("Ingrese un número");
+                
+                this.datos.push(val);
+                this.render();
+                this.mostrarCodigo(CODIGO_C.encolar);
+                this.mensaje(`Encolado: ${val}`);
+                input.value = '';
+                input.focus();
+            },
+
+            desencolar() {
+                if (this.datos.length === 0) return this.mensaje('Cola vacía');
+                const val = this.datos.shift();
+                this.render();
+                this.mostrarCodigo(CODIGO_C.desencolar);
+                this.mensaje(`Desencolado: ${val}`);
+            },
+
+            render() {
+                const div = document.getElementById('lienzo');
+                div.innerHTML = '';
+                if (this.datos.length === 0) {
+                    div.innerHTML = 'Vacía';
+                    return;
+                }
+                this.datos.forEach(d => {
+                    const nodo = document.createElement('div');
+                    nodo.style.border = "1px solid black";
+                    nodo.style.padding = "5px";
+                    nodo.textContent = d;
+                    div.appendChild(nodo);
+                });
+            },
+
+            mostrarCodigo(txt) {
+                document.getElementById('codigoDisplay').innerHTML = txt.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            },
+            mensaje(txt) {
+                document.getElementById('mensaje').textContent = txt;
+                setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);
+            }
+        };
+    </script>
+</body>
+</html>

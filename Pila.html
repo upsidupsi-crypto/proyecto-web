@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pila</title>
+</head>
+<body>
+    <a href="Proyecto.html">Volver al Menú</a>
+    <hr>
+
+    <h1>Pila (Stack)</h1>
+    <p>LIFO (Last In, First Out).</p>
+    
+    <div>
+        <input type="text" id="inputPila" placeholder="Valor numérico">
+        <button onclick="app.push()">Push</button>
+        <button onclick="app.pop()">Pop</button>
+    </div>
+    <p id="mensaje" style="color: blue;"></p>
+
+    <h3>Visualización:</h3>
+    <div id="lienzo">La pila está vacía</div>
+
+    <h3>Código C:</h3>
+    <pre id="codigoDisplay" style="background-color: #f0f0f0; padding: 10px;">Seleccione una operación...</pre>
+
+    <script>
+        const CODIGO_C = {
+            push: `typedef struct Nodo {
+    int dato;
+    struct Nodo* siguiente;
+} Nodo;
+
+void push(Nodo** tope, int dato) {
+    Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
+    nuevoNodo->dato = dato;
+    nuevoNodo->siguiente = *tope;
+    *tope = nuevoNodo;
+    printf("Elemento %d apilado\\n", dato);
+}`,
+            pop: `int pop(Nodo** tope) {
+    if (*tope == NULL) return -1;
+    Nodo* temporal = *tope;
+    int dato = temporal->dato;
+    *tope = (*tope)->siguiente;
+    free(temporal);
+    return dato;
+}`
+        };
+
+        const app = {
+            datos: [],
+
+            push() {
+                const input = document.getElementById('inputPila');
+                const val = input.value.trim();
+                if (!val || isNaN(val)) return alert("Ingrese un número");
+                
+                this.datos.push(val);
+                this.render();
+                this.mostrarCodigo(CODIGO_C.push);
+                this.mensaje(`Push: ${val}`);
+                input.value = '';
+                input.focus();
+            },
+
+            pop() {
+                if (this.datos.length === 0) return this.mensaje('Pila vacía');
+                const val = this.datos.pop();
+                this.render();
+                this.mostrarCodigo(CODIGO_C.pop);
+                this.mensaje(`Pop: ${val}`);
+            },
+
+            render() {
+                const div = document.getElementById('lienzo');
+                div.innerHTML = '';
+                if (this.datos.length === 0) {
+                    div.innerHTML = 'Vacía';
+                    return;
+                }
+                // Renderizar invertido (tope arriba)
+                this.datos.slice().reverse().forEach(d => {
+                    const nodo = document.createElement('div');
+                    nodo.style.border = "1px solid black";
+                    nodo.style.width = "50px";
+                    nodo.style.textAlign = "center";
+                    nodo.textContent = d;
+                    div.appendChild(nodo);
+                });
+            },
+
+            mostrarCodigo(txt) {
+                document.getElementById('codigoDisplay').innerHTML = txt.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            },
+            mensaje(txt) {
+                document.getElementById('mensaje').textContent = txt;
+                setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);
+            }
+        };
+    </script>
+</body>
+</html>

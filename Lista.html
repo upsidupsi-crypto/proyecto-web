@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Enlazada</title>
+</head>
+<body>
+    <a href="Proyecto.html">Volver al Menú</a>
+    <hr>
+
+    <h1>Lista Enlazada</h1>
+    <p>Nodos conectados secuencialmente.</p>
+    
+    <div>
+        <input type="text" id="inputLista" placeholder="Valor numérico">
+        <button onclick="app.insertarInicio()">Insertar Inicio</button>
+        <button onclick="app.insertarFinal()">Insertar Final</button>
+        <button onclick="app.eliminar()">Eliminar Valor</button>
+    </div>
+    <p id="mensaje" style="color: blue;"></p>
+
+    <h3>Visualización:</h3>
+    <div id="lienzo" style="display: flex; align-items: center;">La lista está vacía</div>
+
+    <h3>Código C:</h3>
+    <pre id="codigoDisplay" style="background-color: #f0f0f0; padding: 10px;">Seleccione una operación...</pre>
+
+    <script>
+        const CODIGO_C = {
+            inicio: `void insertarInicio(Nodo** cabeza, int dato) {
+    Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
+    nuevoNodo->dato = dato;
+    nuevoNodo->siguiente = *cabeza;
+    *cabeza = nuevoNodo;
+}`,
+            final: `void insertarFinal(Nodo** cabeza, int dato) {
+    Nodo* nuevoNodo = (Nodo*)malloc(sizeof(Nodo));
+    nuevoNodo->dato = dato;
+    nuevoNodo->siguiente = NULL;
+    if (*cabeza == NULL) {
+        *cabeza = nuevoNodo;
+        return;
+    }
+    Nodo* actual = *cabeza;
+    while (actual->siguiente != NULL) actual = actual->siguiente;
+    actual->siguiente = nuevoNodo;
+}`,
+            eliminar: `void eliminar(Nodo** cabeza, int valor) {
+    Nodo* actual = *cabeza;
+    Nodo* anterior = NULL;
+    while (actual != NULL && actual->dato != valor) {
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+    if (actual == NULL) return;
+    if (anterior == NULL) *cabeza = actual->siguiente;
+    else anterior->siguiente = actual->siguiente;
+    free(actual);
+}`
+        };
+
+        const app = {
+            datos: [],
+
+            insertarInicio() {
+                const val = this.getVal();
+                if (val === null) return;
+                this.datos.unshift(val);
+                this.render();
+                this.mostrarCodigo(CODIGO_C.inicio);
+                this.mensaje(`Insertado inicio: ${val}`);
+            },
+
+            insertarFinal() {
+                const val = this.getVal();
+                if (val === null) return;
+                this.datos.push(val);
+                this.render();
+                this.mostrarCodigo(CODIGO_C.final);
+                this.mensaje(`Insertado final: ${val}`);
+            },
+
+            eliminar() {
+                const val = this.getVal();
+                if (val === null) return;
+                const idx = this.datos.indexOf(String(val));
+                if (idx === -1) return this.mensaje('Valor no encontrado');
+                this.datos.splice(idx, 1);
+                this.render();
+                this.mostrarCodigo(CODIGO_C.eliminar);
+                this.mensaje(`Eliminado: ${val}`);
+            },
+
+            render() {
+                const div = document.getElementById('lienzo');
+                div.innerHTML = '';
+                if (this.datos.length === 0) {
+                    div.innerHTML = 'NULL';
+                    return;
+                }
+                this.datos.forEach(d => {
+                    const caja = document.createElement('div');
+                    caja.style.border = "1px solid black";
+                    caja.style.padding = "5px";
+                    caja.textContent = d;
+                    div.appendChild(caja);
+                    
+                    const flecha = document.createElement('span');
+                    flecha.innerHTML = "&nbsp;&rarr;&nbsp;";
+                    div.appendChild(flecha);
+                });
+                const fin = document.createElement('span');
+                fin.textContent = "NULL";
+                div.appendChild(fin);
+            },
+
+            getVal() {
+                const input = document.getElementById('inputLista');
+                const val = input.value.trim();
+                if (!val || isNaN(val)) {
+                    alert("Ingrese un número");
+                    return null;
+                }
+                input.value = '';
+                input.focus();
+                return val;
+            },
+
+            mostrarCodigo(txt) {
+                document.getElementById('codigoDisplay').innerHTML = txt.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
+            },
+            mensaje(txt) {
+                document.getElementById('mensaje').textContent = txt;
+                setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);
+            }
+        };
+    </script>
+</body>
+</html>
