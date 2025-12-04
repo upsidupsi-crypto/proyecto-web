@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Enlazada</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
@@ -11,21 +13,27 @@
         <a href="Cola.html">Cola</a> |
         <a href="Lista.html">Lista Enlazada</a>
     </nav>
-    <hr>
     <h1>Lista Enlazada</h1>
-    <div>
-        <input type="text" id="inputLista" placeholder="Valor numérico">
+    
+    <div class="control-section">
+        <input type="text" id="inputLista" placeholder="Ingrese un número">
         <button onclick="app.insertarInicio()">Insertar Inicio</button>
         <button onclick="app.insertarFinal()">Insertar Final</button>
         <button onclick="app.eliminar()">Eliminar Valor</button>
+        <p id="mensaje"></p>
     </div>
-    <p id="mensaje"></p>
 
-    <h3>Visualización:</h3>
-    <div id="lienzo" style="display: flex; align-items: center;">La lista está vacía</div>
+    <div class="content-container">
+        <div class="visualization-container">
+            <h3>Visualización:</h3>
+            <div id="lienzo" data-structure="lista">La lista está vacía</div>
+        </div>
 
-    <h3>Código C:</h3>
-    <pre id="codigoDisplay" style="padding: 10px;">Seleccione una operación...</pre>
+        <div class="code-container">
+            <h3>Código C:</h3>
+            <pre id="codigoDisplay">Seleccione una operación...</pre>
+        </div>
+    </div>
 
     <script>
         const CODIGO_C = {
@@ -120,6 +128,7 @@
                     const caja = document.createElement('div');
                     caja.style.border = "1px solid black";
                     caja.style.padding = "5px";
+                    caja.className = 'nodo-entrada';
                     caja.textContent = d;
                     div.appendChild(caja);
                     
@@ -155,7 +164,6 @@
             // Función auxiliar para mostrar notificaciones breves
             mensaje(txt) {
                 document.getElementById('mensaje').textContent = txt;
-                setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);
             }
         };
     </script>

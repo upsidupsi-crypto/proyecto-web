@@ -2,7 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cola</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav>
@@ -11,20 +13,26 @@
         <a href="Cola.html">Cola</a> |
         <a href="Lista.html">Lista Enlazada</a>
     </nav>
-    <hr>
     <h1>Cola (Queue)</h1>
-    <div>
-        <input type="text" id="inputCola" placeholder="Valor numérico">
-        <button onclick="app.encolar()">Encolar</button>
-        <button onclick="app.desencolar()">Desencolar</button>
+    
+    <div class="control-section">
+        <input type="text" id="inputCola" placeholder="Ingrese un número">
+        <button onclick="app.encolar()">Encolar (Enqueue)</button>
+        <button onclick="app.desencolar()">Desencolar (Dequeue)</button>
+        <p id="mensaje"></p>
     </div>
-    <p id="mensaje"></p>
 
-    <h3>Visualización:</h3>
-    <div id="lienzo" style="display: flex; gap: 5px;">La cola está vacía</div>
+    <div class="content-container">
+        <div class="visualization-container">
+            <h3>Visualización:</h3>
+            <div id="lienzo" data-structure="cola">La cola está vacía</div>
+        </div>
 
-    <h3>Código C:</h3>
-    <pre id="codigoDisplay" style="padding: 10px;">Seleccione una operación...</pre>
+        <div class="code-container">
+            <h3>Código C:</h3>
+            <pre id="codigoDisplay">Seleccione una operación...</pre>
+        </div>
+    </div>
 
     <script>
         const CODIGO_C = {
@@ -68,7 +76,7 @@ void encolar(Cola* c, int dato) {
                 const val = input.value.trim();
                 if (!val || isNaN(val)) return alert("Ingrese un número");
                 
-                this.datos.push(val); // Agrega al final (derecha)
+                this.datos.push(val);
                 this.render();
                 this.mostrarCodigo(CODIGO_C.encolar);
                 this.mensaje(`Encolado: ${val}`);
@@ -105,6 +113,7 @@ void encolar(Cola* c, int dato) {
                     const nodo = document.createElement('div');
                     nodo.style.border = "1px solid black";
                     nodo.style.padding = "5px";
+                    nodo.className = 'nodo-entrada';
                     nodo.textContent = d;
                     div.appendChild(nodo);
                 });
@@ -118,7 +127,6 @@ void encolar(Cola* c, int dato) {
             // Función auxiliar para mostrar mensajes temporales de estado
             mensaje(txt) {
                 document.getElementById('mensaje').textContent = txt;
-                setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);
             }
         };
     </script>
