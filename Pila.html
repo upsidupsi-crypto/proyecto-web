@@ -5,24 +5,26 @@
     <title>Pila</title>
 </head>
 <body>
-    <a href="Proyecto.html">Volver al Menú</a>
+    <nav>
+        <a href="Proyecto.html">Inicio</a> |
+        <a href="Pila.html">Pila</a> |
+        <a href="Cola.html">Cola</a> |
+        <a href="Lista.html">Lista Enlazada</a>
+    </nav>
     <hr>
-
-    <h1>Pila (Stack)</h1>
-    <p>LIFO (Last In, First Out).</p>
-    
+    <h1>Pila</h1>
     <div>
         <input type="text" id="inputPila" placeholder="Valor numérico">
         <button onclick="app.push()">Push</button>
         <button onclick="app.pop()">Pop</button>
     </div>
-    <p id="mensaje" style="color: blue;"></p>
+    <p id="mensaje"></p>
 
     <h3>Visualización:</h3>
     <div id="lienzo">La pila está vacía</div>
 
     <h3>Código C:</h3>
-    <pre id="codigoDisplay" style="background-color: #f0f0f0; padding: 10px;">Seleccione una operación...</pre>
+    <pre id="codigoDisplay" style="padding: 10px;">Seleccione una operación...</pre>
 
     <script>
         const CODIGO_C = {

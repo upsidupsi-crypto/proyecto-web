@@ -5,25 +5,27 @@
     <title>Lista Enlazada</title>
 </head>
 <body>
-    <a href="Proyecto.html">Volver al Menú</a>
+    <nav>
+        <a href="Proyecto.html">Inicio</a> |
+        <a href="Pila.html">Pila</a> |
+        <a href="Cola.html">Cola</a> |
+        <a href="Lista.html">Lista Enlazada</a>
+    </nav>
     <hr>
-
     <h1>Lista Enlazada</h1>
-    <p>Nodos conectados secuencialmente.</p>
-    
     <div>
         <input type="text" id="inputLista" placeholder="Valor numérico">
         <button onclick="app.insertarInicio()">Insertar Inicio</button>
         <button onclick="app.insertarFinal()">Insertar Final</button>
         <button onclick="app.eliminar()">Eliminar Valor</button>
     </div>
-    <p id="mensaje" style="color: blue;"></p>
+    <p id="mensaje"></p>
 
     <h3>Visualización:</h3>
     <div id="lienzo" style="display: flex; align-items: center;">La lista está vacía</div>
 
     <h3>Código C:</h3>
-    <pre id="codigoDisplay" style="background-color: #f0f0f0; padding: 10px;">Seleccione una operación...</pre>
+    <pre id="codigoDisplay" style="padding: 10px;">Seleccione una operación...</pre>
 
     <script>
         const CODIGO_C = {
