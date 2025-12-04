@@ -62,8 +62,12 @@
         };
 
         const app = {
-            datos: [],
-
+            datos: [], 
+            
+            /**
+             * Inserta un nodo al principio de la lista.
+             * Utiliza unshift para colocar el elemento en el índice 0 del arreglo.
+             */
             insertarInicio() {
                 const val = this.getVal();
                 if (val === null) return;
@@ -73,6 +77,10 @@
                 this.mensaje(`Insertado inicio: ${val}`);
             },
 
+            /**
+             * Inserta un nodo al final de la lista.
+             * Utiliza push para colocar el elemento en el último índice.
+             */
             insertarFinal() {
                 const val = this.getVal();
                 if (val === null) return;
@@ -82,6 +90,10 @@
                 this.mensaje(`Insertado final: ${val}`);
             },
 
+            /**
+             * Busca y elimina un nodo basado en su valor.
+             * Busca el índice del valor y si existe lo elimina usando splice.
+             */
             eliminar() {
                 const val = this.getVal();
                 if (val === null) return;
@@ -93,6 +105,10 @@
                 this.mensaje(`Eliminado: ${val}`);
             },
 
+            /**
+             * Dibuja la lista enlazada en el DOM.
+             * Crea divs para los nodos y flechas (->) entre ellos.
+             */
             render() {
                 const div = document.getElementById('lienzo');
                 div.innerHTML = '';
@@ -116,6 +132,9 @@
                 div.appendChild(fin);
             },
 
+            /**
+             * Función auxiliar para obtener y validar el valor del input.
+             */
             getVal() {
                 const input = document.getElementById('inputLista');
                 const val = input.value.trim();
@@ -128,9 +147,12 @@
                 return val;
             },
 
+            // Función auxiliar para inyectar el código C en el HTML
             mostrarCodigo(txt) {
                 document.getElementById('codigoDisplay').innerHTML = txt.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
             },
+            
+            // Función auxiliar para mostrar notificaciones breves
             mensaje(txt) {
                 document.getElementById('mensaje').textContent = txt;
                 setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);

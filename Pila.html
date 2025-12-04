@@ -21,7 +21,7 @@
     <p id="mensaje"></p>
 
     <h3>Visualización:</h3>
-    <div id="lienzo">La pila está vacía</div>
+    <div id="lienzo" style="display: flex; gap: 5px;">La pila está vacía</div>
 
     <h3>Código C:</h3>
     <pre id="codigoDisplay" style="padding: 10px;">Seleccione una operación...</pre>
@@ -53,6 +53,10 @@ void push(Nodo** tope, int dato) {
         const app = {
             datos: [],
 
+            /**
+             * Función Push: Agrega un elemento al tope de la pila.
+             * Valida el input, lo añade al arreglo, y llama a renderizar.
+             */
             push() {
                 const input = document.getElementById('inputPila');
                 const val = input.value.trim();
@@ -66,6 +70,10 @@ void push(Nodo** tope, int dato) {
                 input.focus();
             },
 
+            /**
+             * Función Pop: Elimina el elemento del tope.
+             * Utiliza el método pop() nativo de arrays que saca el último elemento insertado.
+             */
             pop() {
                 if (this.datos.length === 0) return this.mensaje('Pila vacía');
                 const val = this.datos.pop();
@@ -74,6 +82,11 @@ void push(Nodo** tope, int dato) {
                 this.mensaje(`Pop: ${val}`);
             },
 
+            /**
+             * Renderiza la pila visualmente.
+             * Invierte una copia del arreglo (.slice().reverse()) para que
+             * el último elemento agregado aparezca visualmente arriba.
+             */
             render() {
                 const div = document.getElementById('lienzo');
                 div.innerHTML = '';
@@ -81,7 +94,7 @@ void push(Nodo** tope, int dato) {
                     div.innerHTML = 'Vacía';
                     return;
                 }
-                // Renderizar invertido (tope arriba)
+                // Renderizar invertido para que el tope quede arriba visualmente
                 this.datos.slice().reverse().forEach(d => {
                     const nodo = document.createElement('div');
                     nodo.style.border = "1px solid black";
@@ -92,9 +105,12 @@ void push(Nodo** tope, int dato) {
                 });
             },
 
+            // Función auxiliar para mostrar el código C
             mostrarCodigo(txt) {
                 document.getElementById('codigoDisplay').innerHTML = txt.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
             },
+            
+            // Función auxiliar para mensajes temporales
             mensaje(txt) {
                 document.getElementById('mensaje').textContent = txt;
                 setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);

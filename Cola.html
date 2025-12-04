@@ -56,14 +56,19 @@ void encolar(Cola* c, int dato) {
         };
 
         const app = {
-            datos: [],
+            datos: [], 
 
+            /**
+             * Función para agregar elementos a la cola (Enqueue).
+             * Obtiene el valor, valida que sea número, lo agrega al final del arreglo,
+             * actualiza la interfaz gráfica y muestra el código C correspondiente.
+             */
             encolar() {
                 const input = document.getElementById('inputCola');
                 const val = input.value.trim();
                 if (!val || isNaN(val)) return alert("Ingrese un número");
                 
-                this.datos.push(val);
+                this.datos.push(val); // Agrega al final (derecha)
                 this.render();
                 this.mostrarCodigo(CODIGO_C.encolar);
                 this.mensaje(`Encolado: ${val}`);
@@ -71,14 +76,24 @@ void encolar(Cola* c, int dato) {
                 input.focus();
             },
 
+            /**
+             * Función para retirar elementos de la cola (Dequeue).
+             * Verifica si está vacía, remueve el primer elemento del arreglo (FIFO),
+             * actualiza la vista y muestra el código C.
+             */
             desencolar() {
                 if (this.datos.length === 0) return this.mensaje('Cola vacía');
-                const val = this.datos.shift();
+                const val = this.datos.shift(); // Remueve del inicio (izquierda)
                 this.render();
                 this.mostrarCodigo(CODIGO_C.desencolar);
                 this.mensaje(`Desencolado: ${val}`);
             },
 
+            /**
+             * Dibuja visualmente la cola en el contenedor 'lienzo'.
+             * Limpia el HTML actual e itera sobre los datos creando divs cuadrados para cada elemento.
+             * Los elementos se agregan en orden de llegada.
+             */
             render() {
                 const div = document.getElementById('lienzo');
                 div.innerHTML = '';
@@ -95,9 +110,12 @@ void encolar(Cola* c, int dato) {
                 });
             },
 
+            // Función auxiliar para inyectar el texto del código C en la etiqueta <pre>
             mostrarCodigo(txt) {
                 document.getElementById('codigoDisplay').innerHTML = txt.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
             },
+            
+            // Función auxiliar para mostrar mensajes temporales de estado
             mensaje(txt) {
                 document.getElementById('mensaje').textContent = txt;
                 setTimeout(() => document.getElementById('mensaje').textContent = '', 3000);
