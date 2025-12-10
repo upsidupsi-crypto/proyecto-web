@@ -12,15 +12,54 @@
         <a href="Pila.html">Pila</a> |
         <a href="Cola.html">Cola</a> |
         <a href="Lista.html">Lista Enlazada</a>
-    </nav>
+    <hr>
     <h1>Lista Enlazada</h1>
     
+    <div id="initialModal" class="modal-overlay">
+        <div class="modal-box">
+            <h2>Lista Enlazada</h2>
+            <p>¿Qué deseas hacer?</p>
+            <div class="modal-buttons">
+                <button onclick="app.crearNueva()">Crear Nueva</button>
+                <button onclick="app.cargarGuardada()">Cargar Guardada</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="control-section">
-        <input type="text" id="inputLista" placeholder="Ingrese un número">
-        <button onclick="app.insertarInicio()">Insertar Inicio</button>
-        <button onclick="app.insertarFinal()">Insertar Final</button>
-        <button onclick="app.eliminar()">Eliminar Valor</button>
+        <div>
+            <input type="text" id="inputLista" placeholder="Ingrese un número">
+        </div>
+        <div>
+            <h4 class="section-title">Insertar:</h4>
+            <button onclick="app.insertarInicio()">Insertar Inicio</button>
+            <button onclick="app.insertarFinal()">Insertar Final</button>
+            <button onclick="app.mostrarModalPosicion('insertar')">Insertar en Posición</button>
+        </div>
+        <div>
+            <h4 class="section-title">Eliminar:</h4>
+            <button onclick="app.eliminarInicio()">Eliminar Inicio</button>
+            <button onclick="app.eliminarFinal()">Eliminar Final</button>
+            <button onclick="app.eliminar()">Eliminar por Valor</button>
+            <button onclick="app.mostrarModalPosicion('eliminar')">Eliminar por Posición</button>
+        </div>
         <p id="mensaje"></p>
+        <div class="storage-buttons">
+            <button onclick="app.descargarTxt()">Descargar TXT</button>
+            <button onclick="document.getElementById('fileLista').click()">Cargar TXT</button>
+            <input type="file" id="fileLista" accept=".txt" class="hidden-file" onchange="app.cargarTxt(event)">
+        </div>
+    </div>
+
+    <div id="posicionModal" class="modal-overlay">
+        <div class="modal-box">
+            <h2 id="modalTitulo">Insertar en Posición</h2>
+            <p>Ingrese la posición (0-indexado)</p>
+            <div class="input-group">
+                <input type="number" id="inputPosicion" placeholder="Posición" min="0" value="0">
+                <button onclick="app.confirmarPosicion()">Confirmar</button>
+            </div>
+        </div>
     </div>
 
     <div class="content-container">
@@ -70,7 +109,107 @@
         };
 
         const app = {
-            datos: [], 
+            datos: [],
+            operacionPosicion: null,
+            
+            /*Descargar lista como archivo txt*/
+            descargarTxt() {
+                if (this.datos.length === 0) return this.mensaje('Lista vacía, nada que descargar');
+                const contenido = this.datos.join(',');
+                const blob = new Blob([contenido], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'lista.txt';
+                a.click();
+                window.URL.revokeObjectURL(url);
+                this.mensaje('Lista descargada');
+            },
+
+            /*Cargar lista desde archivo txt*/
+            cargarTxt(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const contenido = e.target.result.trim();
+                    if (!contenido) return this.mensaje('Archivo vacío');
+                    this.datos = contenido.split(',').map(d => d.trim()).filter(d => !isNaN(d) && d !== '');
+                    if (this.datos.length === 0) return this.mensaje('Archivo sin datos válidos');
+                    this.render();
+                    this.mensaje(`Cargados ${this.datos.length} elementos`);
+                };
+                reader.readAsText(file);
+                event.target.value = '';
+            },
+
+            /*Descargar lista como archivo txt*/
+            descargarArchivo() {
+                if (this.datos.length === 0) return this.mensaje('Lista vacía, nada que descargar');
+                const contenido = this.datos.join(',');
+                const blob = new Blob([contenido], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'lista.txt';
+                a.click();
+                window.URL.revokeObjectURL(url);
+                this.mensaje('Lista descargada');
+            },
+
+            /*Cargar lista desde archivo txt*/
+            cargarArchivo(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const contenido = e.target.result.trim();
+                    if (!contenido) return this.mensaje('Archivo vacío');
+                    this.datos = contenido.split(',').map(d => d.trim()).filter(d => !isNaN(d) && d !== '');
+                    if (this.datos.length === 0) return this.mensaje('Archivo sin datos válidos');
+                    this.render();
+                    this.mensaje(`Cargados ${this.datos.length} elementos`);
+                };
+                reader.readAsText(file);
+                event.target.value = '';
+            },
+
+            /*Mostrar modal de posición*/
+            mostrarModalPosicion(operacion) {
+                this.operacionPosicion = operacion;
+                const modal = document.getElementById('posicionModal');
+                const titulo = document.getElementById('modalTitulo');
+                titulo.textContent = operacion === 'insertar' ? 'Insertar en Posición' : 'Eliminar por Posición';
+                modal.classList.add('active');
+                document.getElementById('inputPosicion').focus();
+            },
+
+            /*Confirmar operación de posición*/
+            confirmarPosicion() {
+                const posicion = parseInt(document.getElementById('inputPosicion').value);
+                document.getElementById('posicionModal').classList.remove('active');
+                
+                if (this.operacionPosicion === 'insertar') {
+                    const val = this.getVal();
+                    if (val === null) return;
+                    if (posicion < 0 || posicion > this.datos.length) {
+                        return this.mensaje('Posición inválida');
+                    }
+                    this.datos.splice(posicion, 0, val);
+                    this.render();
+                    this.mostrarCodigo(CODIGO_C.inicio);
+                    this.mensaje(`Insertado en posición ${posicion}: ${val}`);
+                } else if (this.operacionPosicion === 'eliminar') {
+                    if (posicion < 0 || posicion >= this.datos.length) {
+                        return this.mensaje('Posición inválida');
+                    }
+                    const val = this.datos[posicion];
+                    this.datos.splice(posicion, 1);
+                    this.render();
+                    this.mostrarCodigo(CODIGO_C.eliminar);
+                    this.mensaje(`Eliminado de posición ${posicion}: ${val}`);
+                }
+            },
             
             /**
              * Inserta un nodo al principio de la lista.
@@ -96,6 +235,24 @@
                 this.render();
                 this.mostrarCodigo(CODIGO_C.final);
                 this.mensaje(`Insertado final: ${val}`);
+            },
+
+            /*Elimina el primer elemento*/
+            eliminarInicio() {
+                if (this.datos.length === 0) return this.mensaje('Lista vacía');
+                const val = this.datos.shift();
+                this.render();
+                this.mostrarCodigo(CODIGO_C.eliminar);
+                this.mensaje(`Eliminado del inicio: ${val}`);
+            },
+
+            /*Elimina el último elemento*/
+            eliminarFinal() {
+                if (this.datos.length === 0) return this.mensaje('Lista vacía');
+                const val = this.datos.pop();
+                this.render();
+                this.mostrarCodigo(CODIGO_C.eliminar);
+                this.mensaje(`Eliminado del final: ${val}`);
             },
 
             /**

@@ -13,13 +13,19 @@
         <a href="Cola.html">Cola</a> |
         <a href="Lista.html">Lista Enlazada</a>
     </nav>
+    <hr>
     <h1>Cola (Queue)</h1>
     
     <div class="control-section">
         <input type="text" id="inputCola" placeholder="Ingrese un número">
-        <button onclick="app.encolar()">Encolar (Enqueue)</button>
-        <button onclick="app.desencolar()">Desencolar (Dequeue)</button>
+        <button onclick="app.encolar()">Encolar</button>
+        <button onclick="app.desencolar()">Desencolar</button>
         <p id="mensaje"></p>
+        <div class="storage-buttons">
+            <button onclick="app.descargarTxt()">Descargar TXT</button>
+            <button onclick="document.getElementById('fileCola').click()">Cargar TXT</button>
+            <input type="file" id="fileCola" accept=".txt" class="hidden-file" onchange="app.cargarTxt(event)">
+        </div>
     </div>
 
     <div class="content-container">
@@ -64,7 +70,38 @@ void encolar(Cola* c, int dato) {
         };
 
         const app = {
-            datos: [], 
+            datos: [],
+
+            /*Descargar cola como archivo txt*/
+            descargarTxt() {
+                if (this.datos.length === 0) return this.mensaje('Cola vacía, nada que descargar');
+                const contenido = this.datos.join(',');
+                const blob = new Blob([contenido], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'cola.txt';
+                a.click();
+                window.URL.revokeObjectURL(url);
+                this.mensaje('Cola descargada');
+            },
+
+            /*Cargar cola desde archivo txt*/
+            cargarTxt(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const contenido = e.target.result.trim();
+                    if (!contenido) return this.mensaje('Archivo vacío');
+                    this.datos = contenido.split(',').map(d => d.trim()).filter(d => !isNaN(d) && d !== '');
+                    if (this.datos.length === 0) return this.mensaje('Archivo sin datos válidos');
+                    this.render();
+                    this.mensaje(`Cargados ${this.datos.length} elementos`);
+                };
+                reader.readAsText(file);
+                event.target.value = '';
+            },
 
             /**
              * Función para agregar elementos a la cola (Enqueue).
@@ -91,7 +128,7 @@ void encolar(Cola* c, int dato) {
              */
             desencolar() {
                 if (this.datos.length === 0) return this.mensaje('Cola vacía');
-                const val = this.datos.shift(); // Remueve del inicio (izquierda)
+                const val = this.datos.shift();
                 this.render();
                 this.mostrarCodigo(CODIGO_C.desencolar);
                 this.mensaje(`Desencolado: ${val}`);
@@ -119,12 +156,10 @@ void encolar(Cola* c, int dato) {
                 });
             },
 
-            // Función auxiliar para inyectar el texto del código C en la etiqueta <pre>
             mostrarCodigo(txt) {
                 document.getElementById('codigoDisplay').innerHTML = txt.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;');
             },
             
-            // Función auxiliar para mostrar mensajes temporales de estado
             mensaje(txt) {
                 document.getElementById('mensaje').textContent = txt;
             }
