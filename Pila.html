@@ -14,7 +14,7 @@
         <a href="Lista.html">Lista Enlazada</a>
     </nav>
     <hr>
-    <h1>Pila (Stack)</h1>
+    <h1>Pila</h1>
     
     <div class="control-section">
         <input type="text" id="inputPila" placeholder="Ingrese un número">
@@ -22,6 +22,7 @@
         <button onclick="app.pop()">Pop</button>
         <p id="mensaje"></p>
         <div class="storage-buttons">
+            <button onclick="app.crearNueva()">Crear Nueva</button>
             <button onclick="app.descargarTxt()">Descargar TXT</button>
             <button onclick="document.getElementById('filePila').click()">Cargar TXT</button>
             <input type="file" id="filePila" accept=".txt" class="hidden-file" onchange="app.cargarTxt(event)">
@@ -66,6 +67,15 @@ void push(Nodo** tope, int dato) {
 
         const app = {
             datos: [],
+
+            /*Crear nueva pila*/
+            crearNueva() {
+                this.datos = [];
+                this.render();
+                this.mensaje('Pila nueva creada');
+                document.getElementById('inputPila').value = '';
+                document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...';
+            },
 
             /*Descargar pila como archivo txt*/
             descargarTxt() {

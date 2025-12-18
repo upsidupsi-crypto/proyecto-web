@@ -14,7 +14,7 @@
         <a href="Lista.html">Lista Enlazada</a>
     </nav>
     <hr>
-    <h1>Cola (Queue)</h1>
+    <h1>Cola</h1>
     
     <div class="control-section">
         <input type="text" id="inputCola" placeholder="Ingrese un número">
@@ -22,6 +22,7 @@
         <button onclick="app.desencolar()">Desencolar</button>
         <p id="mensaje"></p>
         <div class="storage-buttons">
+            <button onclick="app.crearNueva()">Crear Nueva</button>
             <button onclick="app.descargarTxt()">Descargar TXT</button>
             <button onclick="document.getElementById('fileCola').click()">Cargar TXT</button>
             <input type="file" id="fileCola" accept=".txt" class="hidden-file" onchange="app.cargarTxt(event)">
@@ -71,6 +72,15 @@ void encolar(Cola* c, int dato) {
 
         const app = {
             datos: [],
+
+            /*Crear nueva cola*/
+            crearNueva() {
+                this.datos = [];
+                this.render();
+                this.mensaje('Cola nueva creada');
+                document.getElementById('inputCola').value = '';
+                document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...';
+            },
 
             /*Descargar cola como archivo txt*/
             descargarTxt() {

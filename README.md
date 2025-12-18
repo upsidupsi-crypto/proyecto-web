@@ -39,7 +39,28 @@ Una Pila es una estructura de datos donde:
 
 ### Funciones Principales
 
-#### a) Función `descargarTxt()`
+#### a) Función `crearNueva()`
+
+```javascript
+crearNueva() {
+    this.datos = [];
+    this.render();
+    this.mensaje('Pila nueva creada');
+    document.getElementById('inputPila').value = '';
+    document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...';
+}
+```
+
+**Explicación paso a paso:**
+1. `this.datos = []`: Limpia el array de datos, dejándolo vacío
+2. `this.render()`: Redibuja la visualización para mostrar la pila vacía
+3. `this.mensaje('Pila nueva creada')`: Muestra un mensaje de confirmación
+4. `document.getElementById('inputPila').value = ''`: Limpia el campo de entrada
+5. `document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...'`: Reinicia el panel de código
+
+#### b) Función `descargarTxt()`
+
+#### b) Función `descargarTxt()`
 
 ```javascript
 descargarTxt() {
@@ -68,7 +89,7 @@ descargarTxt() {
 9. `window.URL.revokeObjectURL(url)`: Libera la memoria de la URL temporal
 10. `this.mensaje('Pila descargada')`: Muestra un mensaje de confirmación
 
-#### b) Función `cargarTxt(event)`
+#### c) Función `cargarTxt(event)`
 
 ```javascript
 cargarTxt(event) {
@@ -193,7 +214,28 @@ Una Cola es una estructura de datos donde:
 
 ### Funciones Principales
 
-#### a) Función `encolar()`
+#### a) Función `crearNueva()`
+
+```javascript
+crearNueva() {
+    this.datos = [];
+    this.render();
+    this.mensaje('Cola nueva creada');
+    document.getElementById('inputCola').value = '';
+    document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...';
+}
+```
+
+**Explicación paso a paso:**
+1. `this.datos = []`: Limpia el array de datos, dejándolo vacío
+2. `this.render()`: Redibuja la visualización para mostrar la cola vacía
+3. `this.mensaje('Cola nueva creada')`: Muestra un mensaje de confirmación
+4. `document.getElementById('inputCola').value = ''`: Limpia el campo de entrada
+5. `document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...'`: Reinicia el panel de código
+
+#### b) Función `encolar()`
+
+#### b) Función `encolar()`
 
 Similar a push() en pila, pero conceptualmente diferente:
 ```javascript
@@ -216,7 +258,7 @@ encolar() {
 - En Pila: el nuevo elemento es el tope
 - En Cola: el nuevo elemento se une a la fila
 
-#### b) Función `desencolar()`
+#### c) Función `desencolar()`
 
 ```javascript
 desencolar() {
@@ -232,7 +274,7 @@ desencolar() {
 1. `this.datos.shift()`: Elimina y retorna el PRIMER elemento del array (concepto SHIFT: saca del inicio, implementando FIFO)
 2. Esto es diferente a pop() que saca del final
 
-#### c) Función `render()` (Cola)
+#### d) Función `render()` (Cola)
 
 ```javascript
 render() {
@@ -257,6 +299,180 @@ render() {
 - NO invierte el array
 - Dibuja los elementos en el orden original (izquierda a derecha)
 - No usa slice() ni reverse() porque NO necesita modificar el orden
+
+---
+
+## 4. Lista Enlazada - Lista.html
+
+### Concepto
+
+Una Lista Enlazada es una estructura donde:
+- Cada elemento (nodo) tiene un valor y un puntero al siguiente
+- Permite insertar y eliminar en cualquier posición
+- Se visualiza horizontalmente con flechas entre elementos
+
+### Funciones Principales
+
+#### a) Función `insertarInicio()`
+
+```javascript
+insertarInicio() {
+    const val = this.getVal();
+    if (val === null) return;
+    this.datos.unshift(val);  // Agrega al inicio
+    this.render();
+    this.mostrarCodigo(CODIGO_C.inicio);
+    this.mensaje(`Insertado inicio: ${val}`);
+}
+```
+
+**Explicación:**
+1. `this.datos.unshift(val)`: Agrega el elemento al inicio del array (concepto UNSHIFT: inserta al principio)
+2. Diferencia con push(): push() agrega al final, unshift() al inicio
+
+#### b) Función `insertarFinal()`
+
+```javascript
+insertarFinal() {
+    const val = this.getVal();
+    if (val === null) return;
+    this.datos.push(val);  // Agrega al final
+    this.render();
+    this.mostrarCodigo(CODIGO_C.final);
+    this.mensaje(`Insertado final: ${val}`);
+}
+```
+
+**Explicación:**
+- Similar a encolar() en cola
+- Agrega al final del array
+
+#### c) Función `mostrarModalPosicion(operacion)`
+
+```javascript
+mostrarModalPosicion(operacion) {
+    this.operacionPosicion = operacion;
+    const modal = document.getElementById('posicionModal');
+    const titulo = document.getElementById('modalTitulo');
+    titulo.textContent = operacion === 'insertar' ? 'Insertar en Posición' : 'Eliminar por Posición';
+    modal.classList.add('active');
+    document.getElementById('inputPosicion').focus();
+}
+```
+
+**Explicación:**
+1. Almacena en `operacionPosicion` qué operación se va a realizar
+2. Modifica el título del modal según la operación
+3. Muestra el modal (agrega clase 'active')
+4. Coloca el foco en el input de posición
+
+#### d) Función `confirmarPosicion()`
+
+```javascript
+confirmarPosicion() {
+    const posicion = parseInt(document.getElementById('inputPosicion').value);
+    document.getElementById('posicionModal').classList.remove('active');
+    
+    if (this.operacionPosicion === 'insertar') {
+        const val = this.getVal();
+        if (val === null) return;
+        if (posicion < 0 || posicion > this.datos.length) {
+            return this.mensaje('Posición inválida');
+        }
+        this.datos.splice(posicion, 0, val);  // Inserta en posición
+        this.render();
+        this.mostrarCodigo(CODIGO_C.inicio);
+        this.mensaje(`Insertado en posición ${posicion}: ${val}`);
+    } else if (this.operacionPosicion === 'eliminar') {
+        if (posicion < 0 || posicion >= this.datos.length) {
+            return this.mensaje('Posición inválida');
+        }
+        const val = this.datos[posicion];
+        this.datos.splice(posicion, 1);  // Elimina en posición
+        this.render();
+        this.mostrarCodigo(CODIGO_C.eliminar);
+        this.mensaje(`Eliminado de posición ${posicion}: ${val}`);
+    }
+}
+```
+
+**Explicación:**
+1. `parseInt()`: Convierte el string a número entero
+2. `this.datos.splice(posicion, 0, val)`: 
+   - Modifica el array directamente
+   - Primer parámetro: posición donde hacer cambio
+   - Segundo parámetro: cuántos elementos eliminar (0 = no eliminar)
+   - Tercer parámetro: qué elemento insertar
+   - Concepto SPLICE: modifica el array insertando o eliminando elementos
+3. `this.datos.splice(posicion, 1)`:
+   - Elimina 1 elemento en la posición especificada
+   - El segundo parámetro (1) indica cuántos eliminar
+
+#### e) Función `eliminarInicio()`
+
+```javascript
+eliminarInicio() {
+    if (this.datos.length === 0) return this.mensaje('Lista vacía');
+    const val = this.datos.shift();  // Elimina el primero
+    this.render();
+    this.mostrarCodigo(CODIGO_C.eliminar);
+    this.mensaje(`Eliminado del inicio: ${val}`);
+}
+```
+
+**Explicación:**
+- `shift()`: Elimina el primer elemento del array
+- Es lo opuesto a unshift()
+
+#### f) Función `eliminarFinal()`
+
+```javascript
+eliminarFinal() {
+    if (this.datos.length === 0) return this.mensaje('Lista vacía');
+    const val = this.datos.pop();  // Elimina el último
+    this.render();
+    this.mostrarCodigo(CODIGO_C.eliminar);
+    this.mensaje(`Eliminado del final: ${val}`);
+}
+```
+
+**Explicación:**
+- `pop()`: Elimina el último elemento del array
+- Es lo opuesto a push()
+
+#### g) Función `render()` (Lista)
+
+```javascript
+render() {
+    const div = document.getElementById('lienzo');
+    div.innerHTML = '';
+    if (this.datos.length === 0) {
+        div.innerHTML = 'NULL';
+        return;
+    }
+    this.datos.forEach(d => {
+        const caja = document.createElement('div');
+        caja.style.border = "1px solid black";
+        caja.style.padding = "5px";
+        caja.className = 'nodo-entrada';
+        caja.textContent = d;
+        div.appendChild(caja);
+        
+        const flecha = document.createElement('span');
+        flecha.innerHTML = "&rarr;";
+        div.appendChild(flecha);
+    });
+    const fin = document.createElement('span');
+    fin.textContent = "NULL";
+    div.appendChild(fin);
+}
+```
+
+**Explicación:**
+1. Por cada elemento, crea un div con su valor
+2. Agrega una flecha (->)
+3. Al final, agrega "NULL" para indicar el final de la lista
+4. **Concepto HTML Entity:** `&rarr;` es una entidad HTML que representa la flecha derecha (→)
 
 ---
 
@@ -348,4 +564,3 @@ Proyecto/
 - Los estilos usan paleta de colores en morado (tema principal)
 - La visualización es en tiempo real sin recargar la página
 - Los archivos TXT se descargan con formato: dato1,dato2,dato3
-
