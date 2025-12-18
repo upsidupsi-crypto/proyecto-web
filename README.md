@@ -28,16 +28,7 @@ Cada tarjeta contiene:
 
 ---
 
-## 2. Pila (Stack) - Pila.html
-
-### Concepto
-
-Una Pila es una estructura de datos donde:
-- El último elemento insertado es el primero en salir (LIFO)
-- Las operaciones principales son PUSH (insertar) y POP (eliminar)
-- Se visualiza de forma vertical, con elementos apilados de abajo hacia arriba
-
-### Funciones Principales
+## Funciones generales
 
 #### a) Función `crearNueva()`
 
@@ -57,8 +48,6 @@ crearNueva() {
 3. `this.mensaje('Pila nueva creada')`: Muestra un mensaje de confirmación
 4. `document.getElementById('inputPila').value = ''`: Limpia el campo de entrada
 5. `document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...'`: Reinicia el panel de código
-
-#### b) Función `descargarTxt()`
 
 #### b) Función `descargarTxt()`
 
@@ -120,7 +109,11 @@ cargarTxt(event) {
 8. `reader.readAsText(file)`: Lee el archivo como texto
 9. `event.target.value = ''`: Limpia el input file para que se pueda cargar otro archivo
 
-#### c) Función `push()`
+## 2. Pila (Stack) - Pila.html
+
+### Funciones Principales
+
+#### a) Función `push()`
 
 ```javascript
 push() {
@@ -147,7 +140,7 @@ push() {
 7. `input.value = ''`: Limpia el input para la siguiente entrada
 8. `input.focus()`: Coloca el cursor en el input automáticamente
 
-#### d) Función `pop()`
+#### b) Función `pop()`
 
 ```javascript
 pop() {
@@ -163,7 +156,7 @@ pop() {
 1. `this.datos.pop()`: Elimina y retorna el último elemento del array (concepto POP: saca el último elemento, implementando LIFO)
 2. El resto funciona de manera similar a push()
 
-#### e) Función `render()`
+#### c) Función `render()`
 
 ```javascript
 render() {
@@ -205,37 +198,9 @@ render() {
 
 ## 3. Cola (Queue) - Cola.html
 
-### Concepto
-
-Una Cola es una estructura de datos donde:
-- El primer elemento insertado es el primero en salir (FIFO)
-- Las operaciones principales son ENCOLAR (insertar al final) y DESENCOLAR (eliminar del inicio)
-- Se visualiza horizontalmente de izquierda a derecha
-
 ### Funciones Principales
 
-#### a) Función `crearNueva()`
-
-```javascript
-crearNueva() {
-    this.datos = [];
-    this.render();
-    this.mensaje('Cola nueva creada');
-    document.getElementById('inputCola').value = '';
-    document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...';
-}
-```
-
-**Explicación paso a paso:**
-1. `this.datos = []`: Limpia el array de datos, dejándolo vacío
-2. `this.render()`: Redibuja la visualización para mostrar la cola vacía
-3. `this.mensaje('Cola nueva creada')`: Muestra un mensaje de confirmación
-4. `document.getElementById('inputCola').value = ''`: Limpia el campo de entrada
-5. `document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...'`: Reinicia el panel de código
-
-#### b) Función `encolar()`
-
-#### b) Función `encolar()`
+#### a) Función `encolar()`
 
 Similar a push() en pila, pero conceptualmente diferente:
 ```javascript
@@ -258,7 +223,7 @@ encolar() {
 - En Pila: el nuevo elemento es el tope
 - En Cola: el nuevo elemento se une a la fila
 
-#### c) Función `desencolar()`
+#### b) Función `desencolar()`
 
 ```javascript
 desencolar() {
@@ -271,10 +236,10 @@ desencolar() {
 ```
 
 **Explicación:**
-1. `this.datos.shift()`: Elimina y retorna el PRIMER elemento del array (concepto SHIFT: saca del inicio, implementando FIFO)
+1. `this.datos.shift()`: Elimina y retorna el PRIMER elemento del array (concepto SHIFT: saca del inicio)
 2. Esto es diferente a pop() que saca del final
 
-#### d) Función `render()` (Cola)
+#### c) Función `render()` (Cola)
 
 ```javascript
 render() {
@@ -303,13 +268,6 @@ render() {
 ---
 
 ## 4. Lista Enlazada - Lista.html
-
-### Concepto
-
-Una Lista Enlazada es una estructura donde:
-- Cada elemento (nodo) tiene un valor y un puntero al siguiente
-- Permite insertar y eliminar en cualquier posición
-- Se visualiza horizontalmente con flechas entre elementos
 
 ### Funciones Principales
 
@@ -564,3 +522,4 @@ Proyecto/
 - Los estilos usan paleta de colores en morado (tema principal)
 - La visualización es en tiempo real sin recargar la página
 - Los archivos TXT se descargan con formato: dato1,dato2,dato3
+
