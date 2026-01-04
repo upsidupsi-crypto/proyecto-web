@@ -28,7 +28,16 @@ Cada tarjeta contiene:
 
 ---
 
-## Funciones generales
+## 2. Pila (Stack) - Pila.html
+
+### Concepto
+
+Una Pila es una estructura de datos donde:
+- El último elemento insertado es el primero en salir (LIFO)
+- Las operaciones principales son PUSH (insertar) y POP (eliminar)
+- Se visualiza de forma vertical, con elementos apilados de abajo hacia arriba
+
+### Funciones Principales
 
 #### a) Función `crearNueva()`
 
@@ -48,6 +57,8 @@ crearNueva() {
 3. `this.mensaje('Pila nueva creada')`: Muestra un mensaje de confirmación
 4. `document.getElementById('inputPila').value = ''`: Limpia el campo de entrada
 5. `document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...'`: Reinicia el panel de código
+
+#### b) Función `descargarTxt()`
 
 #### b) Función `descargarTxt()`
 
@@ -109,11 +120,7 @@ cargarTxt(event) {
 8. `reader.readAsText(file)`: Lee el archivo como texto
 9. `event.target.value = ''`: Limpia el input file para que se pueda cargar otro archivo
 
-## 2. Pila (Stack) - Pila.html
-
-### Funciones Principales
-
-#### a) Función `push()`
+#### c) Función `push()`
 
 ```javascript
 push() {
@@ -140,7 +147,7 @@ push() {
 7. `input.value = ''`: Limpia el input para la siguiente entrada
 8. `input.focus()`: Coloca el cursor en el input automáticamente
 
-#### b) Función `pop()`
+#### d) Función `pop()`
 
 ```javascript
 pop() {
@@ -156,7 +163,7 @@ pop() {
 1. `this.datos.pop()`: Elimina y retorna el último elemento del array (concepto POP: saca el último elemento, implementando LIFO)
 2. El resto funciona de manera similar a push()
 
-#### c) Función `render()`
+#### e) Función `render()`
 
 ```javascript
 render() {
@@ -198,9 +205,37 @@ render() {
 
 ## 3. Cola (Queue) - Cola.html
 
+### Concepto
+
+Una Cola es una estructura de datos donde:
+- El primer elemento insertado es el primero en salir (FIFO)
+- Las operaciones principales son ENCOLAR (insertar al final) y DESENCOLAR (eliminar del inicio)
+- Se visualiza horizontalmente de izquierda a derecha
+
 ### Funciones Principales
 
-#### a) Función `encolar()`
+#### a) Función `crearNueva()`
+
+```javascript
+crearNueva() {
+    this.datos = [];
+    this.render();
+    this.mensaje('Cola nueva creada');
+    document.getElementById('inputCola').value = '';
+    document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...';
+}
+```
+
+**Explicación paso a paso:**
+1. `this.datos = []`: Limpia el array de datos, dejándolo vacío
+2. `this.render()`: Redibuja la visualización para mostrar la cola vacía
+3. `this.mensaje('Cola nueva creada')`: Muestra un mensaje de confirmación
+4. `document.getElementById('inputCola').value = ''`: Limpia el campo de entrada
+5. `document.getElementById('codigoDisplay').innerHTML = 'Seleccione una operación...'`: Reinicia el panel de código
+
+#### b) Función `encolar()`
+
+#### b) Función `encolar()`
 
 Similar a push() en pila, pero conceptualmente diferente:
 ```javascript
@@ -223,7 +258,7 @@ encolar() {
 - En Pila: el nuevo elemento es el tope
 - En Cola: el nuevo elemento se une a la fila
 
-#### b) Función `desencolar()`
+#### c) Función `desencolar()`
 
 ```javascript
 desencolar() {
@@ -236,10 +271,10 @@ desencolar() {
 ```
 
 **Explicación:**
-1. `this.datos.shift()`: Elimina y retorna el PRIMER elemento del array (concepto SHIFT: saca del inicio)
+1. `this.datos.shift()`: Elimina y retorna el PRIMER elemento del array (concepto SHIFT: saca del inicio, implementando FIFO)
 2. Esto es diferente a pop() que saca del final
 
-#### c) Función `render()` (Cola)
+#### d) Función `render()` (Cola)
 
 ```javascript
 render() {
@@ -268,6 +303,13 @@ render() {
 ---
 
 ## 4. Lista Enlazada - Lista.html
+
+### Concepto
+
+Una Lista Enlazada es una estructura donde:
+- Cada elemento (nodo) tiene un valor y un puntero al siguiente
+- Permite insertar y eliminar en cualquier posición
+- Se visualiza horizontalmente con flechas entre elementos
 
 ### Funciones Principales
 
@@ -515,11 +557,255 @@ Proyecto/
 
 ---
 
-## Notas Técnicas
+## Cambios Recientes (Actualización - Enero 2026)
+
+### 🎨 Integración de Bootstrap 5.3.0
+
+Se ha integrado el framework CSS **Bootstrap 5.3.0** para mejorar la interfaz de usuario y proporcionar componentes visuales más profesionales.
+
+#### Cambios en los Archivos HTML:
+
+1. **CDN de Bootstrap agregado** (en la sección `<head>`):
+```html
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+```
+
+2. **JavaScript de Bootstrap agregado** (al final de `</body>`):
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+```
+
+3. **Clases de Bootstrap aplicadas a elementos interactivos:**
+
+| Tipo | Clase | Color | Uso |
+|------|-------|-------|-----|
+| Principal | `btn btn-primary` | Púrpura | Push, Encolar, Confirmar |
+| Peligro | `btn btn-danger` | Rojo | Pop, Desencolar, Eliminar |
+| Éxito | `btn btn-success` | Verde | Crear Nueva, Insertar |
+| Información | `btn btn-info` | Azul | Descargar, Cargar archivos |
+| Inputs | `form-control` | - | Campos de entrada de datos |
+
+#### Ejemplos de implementación:
+
+**Antes:**
+```html
+<button onclick="app.push()">Push</button>
+<input type="text" id="inputPila" placeholder="Ingrese un número">
+```
+
+**Después:**
+```html
+<button onclick="app.push()" class="btn btn-primary">Push</button>
+<input type="text" id="inputPila" placeholder="Ingrese un número" class="form-control d-inline-block">
+```
+
+---
+
+### ✨ Nuevas Animaciones de Entrada y Salida
+
+Se han creado y mejorado animaciones CSS para proporcionar feedback visual cuando aparecen o desaparecen elementos interactivos.
+
+#### Keyframes Agregados:
+
+**1. `slideIn` - Entrada con escala y movimiento vertical**
+```css
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+```
+- **Duración:** 0.5s
+- **Timing:** cubic-bezier(0.34, 1.56, 0.64, 1) - Efecto elástico
+- **Uso:** Entrada de nodos, modal-box
+
+**2. `slideOut` - Salida suave**
+```css
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+    }
+}
+```
+- **Duración:** 0.4s
+- **Timing:** ease-out
+- **Uso:** Salida de nodos cuando se eliminan
+
+**3. `fadeInUp` - Desvanecimiento hacia arriba**
+```css
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+```
+- **Duración:** 0.4s - 0.6s
+- **Uso:** Contenedores principales (visualization-container, code-container)
+
+**4. `slideInLeft` - Deslizamiento desde la izquierda**
+```css
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+```
+- **Duración:** 0.5s
+- **Uso:** Control-section
+
+**5. `slideOutRight` - Deslizamiento a la derecha**
+```css
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+}
+```
+- **Uso:** Elementos cuando salen de la pantalla
+
+---
+
+### 🎯 Efectos Hover Mejorados
+
+**Botones:**
+```css
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(124, 58, 237, 0.3);
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+```
+- Levantamiento visual de 2px
+- Sombra aumentada
+- Gradiente de color más intenso
+
+**Nodos/Elementos (Pila, Cola, Lista):**
+```css
+#lienzo[data-structure="pila"] div:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(124, 58, 237, 0.3);
+}
+```
+- Levantamiento de 4px
+- Escala 105%
+- Sombra profunda
+
+**Tarjetas (Structure Card):**
+```css
+.structure-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(107, 70, 193, 0.3);
+}
+```
+- Levantamiento de 8px
+- Escala 102%
+- Sombra muy pronunciada
+
+**Contenedores:**
+```css
+.visualization-container:hover,
+.code-container:hover {
+    box-shadow: 0 8px 20px rgba(107, 70, 193, 0.2);
+    transform: translateY(-2px);
+}
+```
+- Sombra envolvente
+- Levantamiento suave
+
+---
+
+### 🎨 Mejoras Visuales en Modales
+
+**Modal-overlay:**
+- Agregado `backdrop-filter: blur(4px)` para efecto de desenfoque de fondo
+- Animación de entrada `fadeInUp`
+- Sombra aumentada de `0 20px 60px`
+
+**Modal-box:**
+- Animación de entrada con elasticidad
+- Sombra profunda
+- Bordes redondeados de 12px
+
+---
+
+### 📋 Clases CSS Personalizadas Agregadas
+
+```css
+/* Soporte para Bootstrap spacing utilities */
+.me-2 { margin-right: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.d-inline-block { display: inline-block !important; }
+
+/* Personalización de form-control */
+.form-control {
+    border: 2px solid #d8b4fe !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+}
+
+.form-control:focus {
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1) !important;
+}
+```
+
+---
+
+### 📁 Archivos Modificados
+
+| Archivo | Cambios |
+|---------|---------|
+| `Proyecto.html` | CDN Bootstrap, script bundle |
+| `Pila.html` | CDN Bootstrap, clases btn, form-control |
+| `Cola.html` | CDN Bootstrap, clases btn, form-control |
+| `Lista.html` | CDN Bootstrap, clases btn, form-control |
+| `styles.css` | Nuevos keyframes, efectos hover, clases Bootstrap |
+
+---
+
+### 🚀 Beneficios de estos cambios
+
+1. **Mejor UX**: Animaciones suaves y feedback visual claro
+2. **Consistencia**: Bootstrap proporciona componentes estandarizados
+3. **Accesibilidad**: Mejor contraste y tamaños de botón estándar
+4. **Responsividad**: Bootstrap mejora adaptación a dispositivos
+5. **Profesionalidad**: Interfaz más pulida y moderna
+
+---
+
+
 
 - La aplicación usa Vanilla JavaScript (sin frameworks)
 - Los datos se almacenan en arrays de JavaScript
 - Los estilos usan paleta de colores en morado (tema principal)
 - La visualización es en tiempo real sin recargar la página
 - Los archivos TXT se descargan con formato: dato1,dato2,dato3
-
+- **Nuevo:** Bootstrap 5.3.0 integrado para componentes UI estándar
+- **Nuevo:** Animaciones CSS personalizadas para entrada/salida de elementos
+- **Nuevo:** Efectos hover mejorados con transformaciones suaves
+- **Nuevo:** Backdrop blur en modales para mejor enfoque visual

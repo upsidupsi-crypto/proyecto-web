@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pila</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,14 +18,14 @@
     <h1>Pila</h1>
     
     <div class="control-section">
-        <input type="text" id="inputPila" placeholder="Ingrese un número">
-        <button onclick="app.push()">Push</button>
-        <button onclick="app.pop()">Pop</button>
+        <input type="text" id="inputPila" placeholder="Ingrese un número" class="form-control d-inline-block">
+        <button onclick="app.push()" class="btn btn-primary">Push</button>
+        <button onclick="app.pop()" class="btn btn-danger">Pop</button>
         <p id="mensaje"></p>
         <div class="storage-buttons">
-            <button onclick="app.crearNueva()">Crear Nueva</button>
-            <button onclick="app.descargarTxt()">Descargar TXT</button>
-            <button onclick="document.getElementById('filePila').click()">Cargar TXT</button>
+            <button onclick="app.crearNueva()" class="btn btn-success">Crear Nueva</button>
+            <button onclick="app.descargarTxt()" class="btn btn-info">Descargar TXT</button>
+            <button onclick="document.getElementById('filePila').click()" class="btn btn-info">Cargar TXT</button>
             <input type="file" id="filePila" accept=".txt" class="hidden-file" onchange="app.cargarTxt(event)">
         </div>
     </div>
@@ -173,5 +174,6 @@ void push(Nodo** tope, int dato) {
             }
         };
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

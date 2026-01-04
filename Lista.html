@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista Enlazada</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -21,33 +22,33 @@
             <h2>Lista Enlazada</h2>
             <p>¿Qué deseas hacer?</p>
             <div class="modal-buttons">
-                <button onclick="app.crearNueva()">Crear Nueva</button>
-                <button onclick="app.cargarGuardada()">Cargar Guardada</button>
+                <button onclick="app.crearNueva()" class="btn btn-primary">Crear Nueva</button>
+                <button onclick="app.cargarGuardada()" class="btn btn-info">Cargar Guardada</button>
             </div>
         </div>
     </div>
     
     <div class="control-section">
         <div>
-            <input type="text" id="inputLista" placeholder="Ingrese un número">
+            <input type="text" id="inputLista" placeholder="Ingrese un número" class="form-control mb-3">
         </div>
         <div>
             <h4 class="section-title">Insertar:</h4>
-            <button onclick="app.insertarInicio()">Insertar Inicio</button>
-            <button onclick="app.insertarFinal()">Insertar Final</button>
-            <button onclick="app.mostrarModalPosicion('insertar')">Insertar en Posición</button>
+            <button onclick="app.insertarInicio()" class="btn btn-success me-2">Insertar Inicio</button>
+            <button onclick="app.insertarFinal()" class="btn btn-success me-2">Insertar Final</button>
+            <button onclick="app.mostrarModalPosicion('insertar')" class="btn btn-success">Insertar en Posición</button>
         </div>
         <div>
             <h4 class="section-title">Eliminar:</h4>
-            <button onclick="app.eliminarInicio()">Eliminar Inicio</button>
-            <button onclick="app.eliminarFinal()">Eliminar Final</button>
-            <button onclick="app.eliminar()">Eliminar por Valor</button>
-            <button onclick="app.mostrarModalPosicion('eliminar')">Eliminar por Posición</button>
+            <button onclick="app.eliminarInicio()" class="btn btn-danger me-2">Eliminar Inicio</button>
+            <button onclick="app.eliminarFinal()" class="btn btn-danger me-2">Eliminar Final</button>
+            <button onclick="app.eliminar()" class="btn btn-danger me-2">Eliminar por Valor</button>
+            <button onclick="app.mostrarModalPosicion('eliminar')" class="btn btn-danger">Eliminar por Posición</button>
         </div>
         <p id="mensaje"></p>
         <div class="storage-buttons">
-            <button onclick="app.descargarTxt()">Descargar TXT</button>
-            <button onclick="document.getElementById('fileLista').click()">Cargar TXT</button>
+            <button onclick="app.descargarTxt()" class="btn btn-info">Descargar TXT</button>
+            <button onclick="document.getElementById('fileLista').click()" class="btn btn-info">Cargar TXT</button>
             <input type="file" id="fileLista" accept=".txt" class="hidden-file" onchange="app.cargarTxt(event)">
         </div>
     </div>
@@ -57,8 +58,8 @@
             <h2 id="modalTitulo">Insertar en Posición</h2>
             <p>Ingrese la posición (0-indexado)</p>
             <div class="input-group">
-                <input type="number" id="inputPosicion" placeholder="Posición" min="0" value="0">
-                <button onclick="app.confirmarPosicion()">Confirmar</button>
+                <input type="number" id="inputPosicion" placeholder="Posición" min="0" value="0" class="form-control">
+                <button onclick="app.confirmarPosicion()" class="btn btn-primary">Confirmar</button>
             </div>
         </div>
     </div>
@@ -325,5 +326,6 @@
             }
         };
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
